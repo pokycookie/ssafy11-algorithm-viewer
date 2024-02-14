@@ -16,7 +16,7 @@ const config: Config = {
         vw: 'calc(100vw - (100vw - 100%))',
       },
       gridTemplateColumns: {
-        contentList: '50px 30px 1fr 80px 50px 50px 50px',
+        contentList: '80px 1fr 30px 70px 70px 35px 35px 35px',
       },
     },
   },
