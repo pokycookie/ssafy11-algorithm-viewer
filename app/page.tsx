@@ -2,10 +2,10 @@
 
 import axios from 'axios'
 import useSWR from 'swr'
-import { IRepoFetch } from './api/types/github/IRepoData'
-import ContentList from './api/ui/contentList'
+import { IRepoFetch } from './github/types/IRepoData'
 import { useEffect, useState } from 'react'
-import dataCollector, { IGroupedRepoData } from './api/utils/dataCollector'
+import dataCollector, { IGroupedRepoData } from './utils/dataCollector'
+import ContentGroup from './ui/contentGroup'
 
 const fetcher = (args: string) => axios.get<IRepoFetch>(args).then(res => res.data)
 
@@ -21,16 +21,9 @@ export default function Home() {
 
   return (
     <main className="w-vw flex justify-center">
-      <ul className="w-full max-w-xl">
+      <ul className="w-full max-w-xl p-2 flex flex-col gap-2">
         {Object.keys(data).map((key, i) => {
-          return (
-            <ul key={i} className="p-1 border flex flex-col items-center m-2">
-              <h3 className="text-sm font-medium">{key}</h3>
-              {data[key].map((data, i) => {
-                return <ContentList key={i} data={data} />
-              })}
-            </ul>
-          )
+          return <ContentGroup key={i} title={key} data={data[key]} />
         })}
       </ul>
     </main>
