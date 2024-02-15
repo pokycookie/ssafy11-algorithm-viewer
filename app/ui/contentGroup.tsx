@@ -20,7 +20,7 @@ export default function ContentGroup(props: IProps) {
 
   return (
     <li
-      className="flex flex-col transition-all duration-300 items-center w-full border p-2 data-[collapse=true]:h-11 h-full"
+      className="flex flex-col hover:border-blue-600 transition-all duration-300 items-center w-full border p-2 data-[collapse=true]:h-11 h-full"
       data-collapse={collapse}
     >
       <div className="flex justify-between items-center w-full pl-2">
