@@ -1,4 +1,4 @@
-import { IRepoData } from '../types/github/IRepoData'
+import { IRepoData } from '../github/types/IRepoData'
 import { titleSeparator } from './titleSeparator'
 
 export interface IGroupedRepoData {

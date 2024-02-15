@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IRepoData } from '../types/github/IRepoData'
+import { IRepoData } from '../github/types/IRepoData'
 import { titleSeparator } from '../utils/titleSeparator'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -38,7 +38,7 @@ export default function ContentList(props: IProps) {
   }, [props.data])
 
   return (
-    <li className="hover:border-blue-600 transition-all grid items-center grid-cols-contentList gap-1 p-2 border w-full text-sm rounded-sm m-1">
+    <li className="hover:border-blue-600 transition-all grid items-center grid-cols-contentList gap-1 p-2 border w-full text-sm rounded-sm">
       <p>{number}</p>
       <p></p>
       <p>{team}</p>
