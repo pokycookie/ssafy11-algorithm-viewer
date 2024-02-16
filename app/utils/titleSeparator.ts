@@ -8,15 +8,19 @@ interface IRepoTitleInfo {
 }
 
 export function titleSeparator(title: string): IRepoTitleInfo {
-  const ext = title.split('.')
-  const splited = ext[0].split(SEPARATOR)
+  try {
+    const ext = title.split('.')
+    const splited = ext[0].split(SEPARATOR)
 
-  const number = splited[0]
-  const team = splited[1]
-  const name = splited[2]
-  const lang = getLangType(ext[1])
+    const number = splited[0]
+    const team = splited[1]
+    const name = splited[2]
+    const lang = getLangType(ext[1])
 
-  return { number, name, team, lang }
+    return { number, name, team, lang }
+  } catch {
+    return { number: 'ERROR', name: 'ERROR', team: 'ERR', lang: 'ERR' }
+  }
 }
 
 function getLangType(lang: string): string {
