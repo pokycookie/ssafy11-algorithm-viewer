@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IRepoData } from '../github/types/IRepoData'
 import ContentList from './contentList'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
+import { MouseEvent, useRef, useState } from 'react'
 
 interface IProps {
   title: string
@@ -13,9 +13,16 @@ interface IProps {
 
 export default function ContentGroup(props: IProps) {
   const [collapse, setCollapse] = useState(true)
+  const titleREF = useRef<HTMLDivElement>(null)
 
   const collapseHandler = () => {
     setCollapse(prev => !prev)
+  }
+
+  const easyCollapseHandler = (e: MouseEvent) => {
+    if (e.target == titleREF.current) {
+      setCollapse(prev => !prev)
+    }
   }
 
   return (
@@ -23,7 +30,11 @@ export default function ContentGroup(props: IProps) {
       className="flex flex-col hover:border-blue-600 transition-all duration-300 items-center w-full border p-2 data-[collapse=true]:h-11 h-full"
       data-collapse={collapse}
     >
-      <div className="flex justify-between items-center w-full pl-2">
+      <div
+        className="flex justify-between items-center w-full pl-2"
+        ref={titleREF}
+        onClick={e => easyCollapseHandler(e)}
+      >
         <p className="font-normal text-sm">{props.title}</p>
         <button className="w-7 h-7 border hover:border-blue-600 hover:text-blue-600" onClick={collapseHandler}>
           <FontAwesomeIcon
