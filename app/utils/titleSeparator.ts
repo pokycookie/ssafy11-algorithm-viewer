@@ -12,6 +12,8 @@ export function titleSeparator(title: string): IRepoTitleInfo {
     const ext = title.split('.')
     const splited = ext[0].split(SEPARATOR)
 
+    if (splited.length !== 3) throw new Error()
+
     const number = splited[0]
     const team = splited[1]
     const name = splited[2]
@@ -19,7 +21,7 @@ export function titleSeparator(title: string): IRepoTitleInfo {
 
     return { number, name, team, lang }
   } catch {
-    return { number: 'ERROR', name: 'ERROR', team: 'ERR', lang: 'ERR' }
+    return { number: 'ERROR', name: '', team: '', lang: '' }
   }
 }
 
