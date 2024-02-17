@@ -39,11 +39,11 @@ export default function ContentList(props: IProps) {
 
   return (
     <li className="hover:border-blue-600 transition-all grid items-center grid-cols-contentList gap-1 p-2 border w-full text-sm rounded-sm">
-      <p>{number}</p>
+      <p className="overflow-hidden text-ellipsis whitespace-nowrap">{number}</p>
       <p></p>
-      <p>{team}</p>
-      <p>{name}</p>
-      <p>{lang}</p>
+      <p className="overflow-hidden text-ellipsis whitespace-nowrap">{team}</p>
+      <p className="overflow-hidden text-ellipsis whitespace-nowrap">{name}</p>
+      <p className="overflow-hidden text-ellipsis whitespace-nowrap">{lang}</p>
       <button
         className="w-7 h-7 border data-[copied=true]:text-blue-600 data-[copied=true]:border-blue-600 rounded-sm transition-all hover:border-blue-600 hover:text-blue-600"
         onClick={copyHandler}

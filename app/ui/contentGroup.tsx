@@ -5,6 +5,7 @@ import { IRepoData } from '../github/types/IRepoData'
 import ContentList from './contentList'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { MouseEvent, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface IProps {
   title: string
@@ -26,10 +27,7 @@ export default function ContentGroup(props: IProps) {
   }
 
   return (
-    <li
-      className="flex flex-col hover:border-blue-600 transition-all duration-300 items-center w-full border p-2 data-[collapse=true]:h-11 h-full"
-      data-collapse={collapse}
-    >
+    <motion.li className="flex flex-col hover:border-blue-600 transition-all items-center w-full border p-2">
       <div
         className="flex justify-between items-center w-full pl-2"
         ref={titleREF}
@@ -44,12 +42,12 @@ export default function ContentGroup(props: IProps) {
           />
         </button>
       </div>
-      <ul className="w-full gap-1 flex flex-col overflow-hidden">
+      <motion.ul className="w-full gap-1 flex flex-col overflow-hidden" animate={{ height: collapse ? '0px' : '100%' }}>
         <div className="pt-2"></div>
         {props.data.map((data, i) => {
           return <ContentList key={i} data={data} />
         })}
-      </ul>
-    </li>
+      </motion.ul>
+    </motion.li>
   )
 }

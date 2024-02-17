@@ -8,7 +8,6 @@ import { groupByProblem, groupByUser, IGroupedRepoData } from './utils/dataColle
 import ContentGroup from './ui/contentGroup'
 import Select from 'react-select'
 import { searchOptionGenerator, weekOptionGenerator } from './utils/optionGenerator'
-import { it } from 'node:test'
 
 const fetcher = (args: string) => axios.get<IRepoFetch>(args).then(res => res.data)
 
