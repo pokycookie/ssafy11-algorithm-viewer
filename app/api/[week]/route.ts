@@ -11,7 +11,7 @@ export async function GET(req: Request) {
   const week = req.url.split('api/')[1]
   const res = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: 'ssafy11-study',
-    repo: 'test',
+    repo: 'algorithm',
     path: `src/${week}`,
   })
   const data = res.data

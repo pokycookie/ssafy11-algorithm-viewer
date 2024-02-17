@@ -13,7 +13,7 @@ const fetcher = (args: string) => axios.get<IRepoFetch>(args).then(res => res.da
 
 export default function Home() {
   const [data, setData] = useState<IGroupedRepoData>({})
-  const [week, setWeek] = useState<string>('week2')
+  const [week, setWeek] = useState<string>('week1')
   const [grouping, setGrouping] = useState<TGrouping>('problem')
   const [search, setSearch] = useState<string[]>([])
 
@@ -37,8 +37,8 @@ export default function Home() {
       <div className="w-full max-w-xl flex gap-2 mt-28 mb-8">
         <Select
           className="w-32"
-          defaultValue={{ label: 'week2', value: 'week2' }}
-          onChange={week => setWeek(week?.value ?? 'week2')}
+          defaultValue={{ label: 'week1', value: 'week1' }}
+          onChange={week => setWeek(week?.value ?? 'week1')}
           options={weekList ? weekOptionGenerator(weekList.data) : []}
         />
         <Select

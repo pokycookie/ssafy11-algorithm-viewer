@@ -10,8 +10,8 @@ const octokit = new Octokit({
 export async function GET(req: Request) {
   const res = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: 'ssafy11-study',
-    repo: 'test',
-    path: `src`,
+    repo: 'algorithm',
+    path: 'src',
   })
   const data = res.data
   return Response.json({ data })
