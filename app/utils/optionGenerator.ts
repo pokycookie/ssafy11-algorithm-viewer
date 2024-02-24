@@ -1,19 +1,19 @@
-import { IRepoData } from '../github/types/IRepoData'
-import { IGroupedRepoData } from './dataCollector'
+import { IGithubData } from '../types/IGithubData'
+import { IGroupedSolution } from './dataCollector'
 
 interface IOptions {
   value: string
   label: string
 }
 
-export function weekOptionGenerator(data: IRepoData[]): IOptions[] {
+export function weekOptionGenerator(data: IGithubData[]): IOptions[] {
   return data.map(e => {
     return { value: e.name, label: e.name }
   })
 }
 
-export function searchOptionGenerator(data: IGroupedRepoData): IOptions[] {
-  return Object.keys(data).map(key => {
-    return { value: key, label: key }
+export function searchOptionGenerator(data: IGroupedSolution): IOptions[] {
+  return data.map(e => {
+    return { value: e[0]?.id ?? '', label: e[0]?.id ?? '' }
   })
 }
