@@ -34,9 +34,12 @@ export async function metaDataCollector(data: IGithubData[]): Promise<IGroupedBo
   return map
 }
 
-export type IGroupedSolution = ISolution[][]
+export type IGroupedSolution = {
+  title: string
+  solutions: ISolution[]
+}
 
-export async function groupByProblem(data: IGithubData[], meta: IBojData[]): Promise<IGroupedSolution> {
+export async function groupByProblem(data: IGithubData[], meta: IBojData[]): Promise<IGroupedSolution[]> {
   const group = new Map<string, ISolution[]>()
 
   meta.forEach(metaData => group.set(metaData.problem, []))
@@ -62,9 +65,53 @@ export async function groupByProblem(data: IGithubData[], meta: IBojData[]): Pro
     })
   }
 
-  const res: IGroupedSolution = []
-  group.forEach(value => {
-    if (value.length > 0) res.push(value)
+  const res: IGroupedSolution[] = []
+  group.forEach(solutions => {
+    if (solutions.length > 0)
+      res.push({
+        title: solutions[0].title,
+        solutions,
+      })
+  })
+
+  return res
+}
+
+export function groupByUser2(data: IGithubData[], meta: IBojData[]): IGroupedSolution[] {
+  const group = new Map<string, ISolution[]>()
+
+  data.forEach(githubData => {
+    const { name, team } = titleSeparator(githubData.name)
+    group.set(`${team} ${name}`, [])
+  })
+
+  console.log(group)
+
+  for (const githubData of data) {
+    const { number, name, team, lang } = titleSeparator(githubData.name)
+    const metaData = meta.find(it => it.problem == number)
+
+    group.get(`${team} ${name}`)?.push({
+      id: number,
+      title: metaData?.title ?? '',
+      class: metaData?.class ?? '',
+      level: metaData?.level ?? 'NONE',
+      github_url: githubData.html_url,
+      problem_url: `https://www.acmicpc.net/problem/${number}`,
+      content_url: githubData.download_url,
+      name,
+      lang,
+      team,
+    })
+  }
+
+  const res: IGroupedSolution[] = []
+  group.forEach(solutions => {
+    if (solutions.length > 0)
+      res.push({
+        title: solutions[0].name,
+        solutions,
+      })
   })
 
   return res

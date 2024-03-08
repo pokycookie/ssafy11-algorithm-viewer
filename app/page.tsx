@@ -4,7 +4,7 @@ import axios from 'axios'
 import useSWR from 'swr'
 import { IGithubFetch } from './types/IGithubData'
 import { useEffect, useState } from 'react'
-import { groupByProblem, groupByUser, IGroupedSolution, metaDataCollector } from './utils/dataCollector'
+import { groupByProblem, groupByUser, groupByUser2, IGroupedSolution, metaDataCollector } from './utils/dataCollector'
 import ContentGroup from './ui/contentGroup'
 import Select from 'react-select'
 import { searchOptionGenerator, weekOptionGenerator } from './utils/optionGenerator'
@@ -37,12 +37,16 @@ export default function Home() {
         case 'problem':
           setData(await groupByProblem(req.data, meta[week]))
           break
-        // case 'user':
-        //   setData(groupByUser(req.data))
-        //   break
+        case 'user':
+          setData(groupByUser2(req.data, meta[week]))
+          break
       }
     })()
   }, [req, meta, grouping, week])
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
 
   return (
     <main className="w-vw flex items-center flex-col p-4">
@@ -83,5 +87,5 @@ type TGrouping = 'problem' | 'user'
 
 const groupingOption: { label: string; value: TGrouping }[] = [
   { label: '문제별', value: 'problem' },
-  // { label: '유저별', value: 'user' },
+  { label: '유저별', value: 'user' },
 ]
