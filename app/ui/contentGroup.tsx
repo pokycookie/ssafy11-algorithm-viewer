@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ContentList from './contentList'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ISolution } from '../types/ISolution'
 import Image from 'next/image'
@@ -18,6 +18,10 @@ export default function ContentGroup({ data }: IProps) {
   const collapseHandler = () => {
     setCollapse(prev => !prev)
   }
+
+  useEffect(() => {
+    setCollapse(true)
+  }, [data])
 
   return (
     <motion.li className="flex flex-col hover:border-blue-600 transition-all items-center w-full border p-2">
