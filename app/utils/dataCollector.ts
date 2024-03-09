@@ -4,24 +4,6 @@ import { IBojData, IGroupedBojData, IMetaData } from '../types/IMetaData'
 import { titleSeparator } from './titleSeparator'
 import { ISolution } from '../types/ISolution'
 
-export interface IGroupedRepoData {
-  [key: string]: IGithubData[]
-}
-
-export function groupByUser(data: IGithubData[]): IGroupedRepoData {
-  const map: IGroupedRepoData = {}
-
-  data.forEach(e => {
-    const title = titleSeparator(e.name)
-    if (!map.hasOwnProperty(`${title.team} ${title.name}`)) {
-      map[`${title.team} ${title.name}`] = []
-    }
-    map[`${title.team} ${title.name}`].push(e)
-  })
-
-  return map
-}
-
 export async function metaDataCollector(data: IGithubData[]): Promise<IGroupedBojData> {
   const map: IGroupedBojData = {}
 
@@ -34,8 +16,18 @@ export async function metaDataCollector(data: IGithubData[]): Promise<IGroupedBo
   return map
 }
 
+export type TGrouping = 'problem' | 'user'
+
 export type IGroupedSolution = {
-  title: string
+  grouping: TGrouping
+  searchLabel: string
+  searchValue: any[]
+  id: string | null
+  title: string | null
+  level: string | null
+  class: string | null
+  name: string | null
+  team: string | null
   solutions: ISolution[]
 }
 
@@ -69,7 +61,15 @@ export async function groupByProblem(data: IGithubData[], meta: IBojData[]): Pro
   group.forEach(solutions => {
     if (solutions.length > 0)
       res.push({
+        grouping: 'problem',
+        searchLabel: `${solutions[0].id.padEnd(5, ' ')} ${solutions[0].title}`,
+        searchValue: [solutions[0].id],
         title: solutions[0].title,
+        class: solutions[0].class,
+        id: solutions[0].id,
+        level: solutions[0].level,
+        name: null,
+        team: null,
         solutions,
       })
   })
@@ -77,15 +77,13 @@ export async function groupByProblem(data: IGithubData[], meta: IBojData[]): Pro
   return res
 }
 
-export function groupByUser2(data: IGithubData[], meta: IBojData[]): IGroupedSolution[] {
+export function groupByUser(data: IGithubData[], meta: IBojData[]): IGroupedSolution[] {
   const group = new Map<string, ISolution[]>()
 
   data.forEach(githubData => {
     const { name, team } = titleSeparator(githubData.name)
     group.set(`${team} ${name}`, [])
   })
-
-  console.log(group)
 
   for (const githubData of data) {
     const { number, name, team, lang } = titleSeparator(githubData.name)
@@ -109,7 +107,15 @@ export function groupByUser2(data: IGithubData[], meta: IBojData[]): IGroupedSol
   group.forEach(solutions => {
     if (solutions.length > 0)
       res.push({
-        title: solutions[0].name,
+        grouping: 'user',
+        searchLabel: `${solutions[0].team} ${solutions[0].name}`,
+        searchValue: [solutions[0].team, solutions[0].name],
+        title: null,
+        class: null,
+        id: null,
+        level: null,
+        name: solutions[0].name,
+        team: solutions[0].team,
         solutions,
       })
   })
