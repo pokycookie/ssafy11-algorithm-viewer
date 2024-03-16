@@ -12,8 +12,8 @@ export function weekOptionGenerator(data: IGithubData[]): IOptions[] {
   })
 }
 
-export function searchOptionGenerator(data: IGroupedSolution): IOptions[] {
+export function searchOptionGenerator(data: IGroupedSolution[]): IOptions[] {
   return data.map(e => {
-    return { value: e[0]?.id ?? '', label: e[0]?.id ?? '' }
+    return { value: e.searchValue.join(' '), label: e.searchLabel }
   })
 }

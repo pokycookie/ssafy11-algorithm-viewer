@@ -5,11 +5,11 @@ import ContentList from './contentList'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ISolution } from '../types/ISolution'
 import Image from 'next/image'
+import { IGroupedSolution } from '../utils/dataCollector'
 
 interface IProps {
-  data: ISolution[]
+  data: IGroupedSolution
 }
 
 export default function ContentGroup({ data }: IProps) {
@@ -27,12 +27,27 @@ export default function ContentGroup({ data }: IProps) {
     <motion.li className="flex flex-col hover:border-blue-600 transition-all items-center w-full border p-2">
       <div className="flex overflow-hidden gap-3 justify-between items-center w-full pl-2">
         <div className="flex-1 flex gap-2 font-normal items-center text-sm" onClick={collapseHandler}>
-          <Image className="w-3" src={`/img/icon/${data[0].level}.svg`} alt={data[0].level} width={15} height={15} />
-          <p className="w-11 overflow-hidden text-ellipsis whitespace-nowrap">{data[0].id}</p>
-          <p className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{data[0].title}</p>
-          <p className="text-xs bg-zinc-200 p-1 rounded-sm overflow-hidden text-ellipsis whitespace-nowrap">
-            {data[0].class}
-          </p>
+          {data.grouping === 'problem' ? (
+            <>
+              <Image
+                className="w-3"
+                src={`/img/icon/${data.level}.svg`}
+                alt={data.level ?? ''}
+                width={15}
+                height={15}
+              />
+              <p className="w-11 overflow-hidden text-ellipsis whitespace-nowrap">{data.id}</p>
+              <p className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{data.title}</p>
+              <p className="text-xs bg-zinc-200 p-1 rounded-sm overflow-hidden text-ellipsis whitespace-nowrap">
+                {data.class}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="w-8 overflow-hidden text-ellipsis whitespace-nowrap">{data.team}</p>
+              <p className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">{data.name}</p>
+            </>
+          )}
         </div>
         <button className="w-7 h-7 border hover:border-blue-600 hover:text-blue-600" onClick={collapseHandler}>
           <FontAwesomeIcon
@@ -44,7 +59,7 @@ export default function ContentGroup({ data }: IProps) {
       </div>
       <motion.ul className="w-full gap-1 flex flex-col overflow-hidden" animate={{ height: collapse ? '0px' : '100%' }}>
         <div className="pt-2"></div>
-        {data.map((data, i) => {
+        {data.solutions.map((data, i) => {
           return <ContentList key={i} data={data} />
         })}
       </motion.ul>

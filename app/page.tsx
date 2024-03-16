@@ -4,7 +4,7 @@ import axios from 'axios'
 import useSWR from 'swr'
 import { IGithubFetch } from './types/IGithubData'
 import { useEffect, useState } from 'react'
-import { groupByProblem, groupByUser, IGroupedSolution, metaDataCollector } from './utils/dataCollector'
+import { groupByProblem, groupByUser, IGroupedSolution, metaDataCollector, TGrouping } from './utils/dataCollector'
 import ContentGroup from './ui/contentGroup'
 import Select from 'react-select'
 import { searchOptionGenerator, weekOptionGenerator } from './utils/optionGenerator'
@@ -13,7 +13,7 @@ import { IGroupedBojData } from './types/IMetaData'
 const fetcher = (args: string) => axios.get<IGithubFetch>(args).then(res => res.data)
 
 export default function Home() {
-  const [data, setData] = useState<IGroupedSolution>([])
+  const [data, setData] = useState<IGroupedSolution[]>([])
   const [meta, setMeta] = useState<IGroupedBojData>({})
   const [week, setWeek] = useState<string>('week1')
   const [grouping, setGrouping] = useState<TGrouping>('problem')
@@ -37,9 +37,9 @@ export default function Home() {
         case 'problem':
           setData(await groupByProblem(req.data, meta[week]))
           break
-        // case 'user':
-        //   setData(groupByUser(req.data))
-        //   break
+        case 'user':
+          setData(groupByUser(req.data, meta[week]))
+          break
       }
     })()
   }, [req, meta, grouping, week])
@@ -70,7 +70,12 @@ export default function Home() {
       </div>
       <ul className="w-full max-w-2xl flex flex-col gap-2 mb-28">
         {data
-          .filter(e => (search.length > 0 ? search.some(it => it == e[0].id) : true))
+          .filter(e => {
+            if (search.length === 0) return true
+            if (grouping === 'problem') return search.some(it => it == e.id)
+            if (grouping === 'user') return search.some(it => it == `${e.team} ${e.name}`)
+            return true
+          })
           .map((e, i) => {
             return <ContentGroup key={i} data={e} />
           })}
@@ -79,9 +84,7 @@ export default function Home() {
   )
 }
 
-type TGrouping = 'problem' | 'user'
-
 const groupingOption: { label: string; value: TGrouping }[] = [
   { label: '문제별', value: 'problem' },
-  // { label: '유저별', value: 'user' },
+  { label: '유저별', value: 'user' },
 ]
